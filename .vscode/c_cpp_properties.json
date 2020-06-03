@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/sweilz/ancube_ws/devel/include/**",
+                "/home/sweilz/catkin_ws/devel/include/**",
+                "/opt/ros/melodic/include/**",
+                "/home/sweilz/ancube_ws/src/anman_ancube_x/include/**",
+                "/home/sweilz/catkin_ws/src/test_moveit/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++14"
+        }
+    ],
+    "version": 4
+}
