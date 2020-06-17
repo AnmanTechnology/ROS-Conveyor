@@ -23,20 +23,30 @@ if __name__ == "__main__":
     rospy.init_node("example_node")
     rospy.loginfo("Starting example_node.")
 
-    command_pub = rospy.Publisher("conveyorA/command", Float32, queue_size=1)
+    command_pub = rospy.Publisher("conveyorB/command", Float32, queue_size=1)
     command_msg = Float32()
-    rospy.Subscriber("conveyorA/state", conveyor, state_callback)
+    rospy.Subscriber("conveyorB/state", conveyor, state_callback)
 
-    rate = rospy.Rate(20)
+    state = 0
+    change = 0
+    rate = rospy.Rate(10)
     while not rospy.is_shutdown():
-        if sensor_1:
-            command_msg.data = 2.0 * math.sin(4*time.time())
-        elif sensor_2:
-            command_msg.data = current_vel
-        elif sensor_3:
-            command_msg.data = -1.0
-        else:
-            command_msg.data = 2.0 * \
-                math.sin(2*time.time()) + 1.5 * math.sin(4*time.time())
+        if state == 0:
+            command_msg.data = 0.05
+        elif state == 1:
+            command_msg.data = -0.05
+
+        if sensor_1 and change:
+            state = 0
+            change = 0
+        # elif sensor_2:
+        #     command_msg.data = current_vel
+        if sensor_3 and change:
+            state = 1
+            change = 0
+        if sensor_2:
+            change = 1
+        # else:
+        #     command_msg.data = 0.05
         command_pub.publish(command_msg)
         rate.sleep()
