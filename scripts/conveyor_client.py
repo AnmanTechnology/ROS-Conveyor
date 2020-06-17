@@ -27,6 +27,8 @@ class ConveyorNode(object):
         self.ratio_vel_B = rospy.get_param("~ratio_vel_B", default="1")
         self.ratio_cmd_A = rospy.get_param("~ratio_cmd_A", default="1")
         self.ratio_cmd_B = rospy.get_param("~ratio_cmd_B", default="1")
+        self.min_vel = rospy.get_param("~min_vel", default="-0.2")
+        self.max_vel = rospy.get_param("~max_vel", default="0.2")
 
         self.rate = rospy.Rate(publish_rate)
 
@@ -59,6 +61,10 @@ class ConveyorNode(object):
         self.__input_data = None
 
     @staticmethod
+    def clamp(n, minn, maxn):
+        return max(min(maxn, n), minn)
+
+    @staticmethod
     def map_velocity_to_value(velocity):
         # value = (velocity/0.05*100*2*math.pi*60)/500
         velocity = (velocity*60)/(0.052*2*math.pi*4)
@@ -72,11 +78,14 @@ class ConveyorNode(object):
         return velocity
 
     def set_velocityA(self, msg):
-        self.stateA_msg.target_vel = msg.data  # [m/s]
+
+        self.stateA_msg.target_vel = self.clamp(
+            msg.data, self.min_vel, self.max_vel)  # [m/s]
         self.__timeout_timeA = time.time()
 
     def set_velocityB(self, msg):
-        self.stateB_msg.target_vel = msg.data  # [m/s]
+        self.stateB_msg.target_vel = self.clamp(
+            msg.data, self.min_vel, self.max_vel)  # [m/s]
         self.__timeout_timeB = time.time()
 
     def run(self):

@@ -6,5 +6,7 @@
         <param name="ratio_vel_A" value="1.0"/>
         <param name="ratio_cmd_B" value="1.0"/>
         <param name="ratio_vel_B" value="1.0"/>
+        <param name="min_vel" value="-0.2"/>
+        <param name="max_vel" value="0.2"/>
     </node>
 </launch>
